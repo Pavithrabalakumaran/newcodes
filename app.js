@@ -60,3 +60,27 @@ app.get("/states/", async (request, response) => {
     )
   );
 });
+
+app.get("/states/:stateId/", async (request, response) => {
+  const { stateId } = request.params;
+  const getStatesQuery = `
+    SELECT
+      *
+    FROM
+      state
+    WHERE
+       state_id = ${stateId};`;
+  const state = await database.get(getStatesQuery);
+  response.send(convertStateDbObjectToResponseObject(state));
+});
+
+app.post("/districts/", async (request, response) => {
+  const { districtName, stateId, cases, cured, active, deaths } = request.body;
+  const postDistrictQuery = `
+    INSERT INTO
+        district (state_id, district_name, cases, cured, active, deaths)
+    VALUES 
+        (${stateId}, '${districtName}', ${cases}, ${cured}, ${active}, ${deaths});`;
+  await database.run(postDistrictQuery);
+  response.send("District Successfully Added");
+});
