@@ -17,8 +17,8 @@ const initializeDbAndServer = async () => {
     });
 
     app.listen(3000, () => {
-      console.log("Server Running at http://localhost:3000/")
-    )};
+      console.log("Server Running at http://localhost:3000/");
+    });
   } catch (error) {
     console.log(`DB Error: ${error.message}`);
     process.exit(1);
@@ -57,6 +57,6 @@ app.get("/states/", async (request, response) => {
   response.send(
     statesArray.map((eachState) =>
       convertStateDbObjectToResponseObject(eachState)
-    
+    )
   );
 });
